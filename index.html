@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManaBarath News Hub - Indian Multilingual News</title>
+    <meta name="description" content="Daily news aggregator for Indian languages with Daily Vachana wisdom">
+    
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Serif+Kannada:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #fbbc05;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --text: #333333;
+            --text-light: #5f6368;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: var(--light);
+            color: var(--text);
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            opacity: 0.1;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .tagline {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        
+        /* Navigation */
+        nav {
+            background: var(--dark);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        nav li {
+            margin: 0 0.25rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: block;
+        }
+        
+        nav a:hover, nav a:focus {
+            background: rgba(255,255,255,0.15);
+            color: var(--accent);
+        }
+        
+        nav a.active {
+            background: var(--primary);
+            font-weight: 500;
+        }
+        
+        /* Main Content Layout */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            gap: 1.5rem;
+        }
+        
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+        }
+        
+        /* News Card Styles */
+        .section-title {
+            font-size: 1.5rem;
+            margin: 1rem 0 1.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .news-image {
+            height: 180px;
+            background: #eee;
+            overflow: hidden;
+        }
+        
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+        
+        .news-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .news-title {
+            font-size: 1.1rem;
+            margin: 0 0 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .news-title a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .news-title a:hover {
+            color: var(--primary);
+        }
+        
+        .news-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: auto;
+        }
+        
+        .news-source {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .source-logo {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .news-date {
+            white-space: nowrap;
+        }
+        
+        .language-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        /* Vachana Container */
+        .vachana-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 4px solid var(--accent);
+        }
+        
+        .vachana-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .vachana-title i {
+            color: var(--accent);
+        }
+        
+        .vachana-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            margin: 1.25rem 0;
+            line-height: 1.6;
+            color: var(--dark);
+            font-weight: 500;
+            quotes: "“" "”";
+        }
+        
+        .vachana-text::before, .vachana-text::after {
+            color: var(--accent);
+            font-size: 1.5em;
+            line-height: 0;
+            vertical-align: -0.3em;
+        }
+        
+        .vachana-text::before {
+            content: open-quote;
+            margin-right: 0.15em;
+        }
+        
+        .vachana-text::after {
+            content: close-quote;
+            margin-left: 0.15em;
+        }
+        
+        .vachana-author {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .vachana-language {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        /* Ad Container */
+        .ad-container {
+            background: #f0f0f0;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px dashed #ccc;
+        }
+        
+        .ad-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ad-placeholder {
+            min-height: 250px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+            border-radius: 4px;
+        }
+        
+        /* Language Selector */
+        .language-selector-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .language-selector-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+        }
+        
+        #language-selector {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: 1rem;
+            background: white;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+        
+        #language-selector:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0,0,0,0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* Error State */
+        .error-state {
+            padding: 2rem;
+            background: #fff4f4;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid #f44336;
+            text-align: center;
+        }
+        
+        .error-icon {
+            color: #f44336;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error-title {
+            color: #d32f2f;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            color: #5f2120;
+            margin-bottom: 1rem;
+        }
+        
+        .retry-button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        
+        .retry-button:hover {
+            background: #d32f2f;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2.5rem 1rem 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: #bdc1c6;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: #9aa0a6;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            nav ul {
+                gap: 0.25rem;
+            }
+            
+            nav a {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .vachana-text {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ManaBarath News Hub</div>
+        <div class="tagline">Wisdom in words, daily | ವಚನ / वचन</div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-flag"></i> National</a></li>
+            <li><a href="#"><i class="fas fa-globe"></i> International</a></li>
+            <li><a href="#"><i class="fas fa-laptop-code"></i> Technology</a></li>
+            <li><a href="#"><i class="fas fa-running"></i> Sports</a></li>
+            <li><a href="#"><i class="fas fa-film"></i> Entertainment</a></li>
+            <li><a href="#"><i class="fas fa-business-time"></i> Business</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <main class="main">
+            <h2 class="section-title">Latest News Across India</h2>
+            
+            <div id="news-feed">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading news updates...</p>
+                </div>
+            </div>
+            
+            <div id="category-tabs" style="margin-top: 2rem;">
+                <!-- Category tabs would be added here dynamically -->
+            </div>
+        </main>
+        
+        <aside class="sidebar">
+            <div class="vachana-container">
+                <h3 class="vachana-title"><i class="fas fa-quote-left"></i> Today's Vachana</h3>
+                <div class="vachana-text" id="vachana-text">"Knowledge is the greatest wealth"</div>
+                <div class="vachana-author" id="vachana-author">- Basavanna</div>
+                <div class="vachana-language" id="vachana-language">
+                    <i class="fas fa-language"></i>
+                    <span>Language: Kannada</span>
+                </div>
+            </div>
+            
+            <div class="ad-container">
+                <div class="ad-label">Advertisement</div>
+                <div class="ad-placeholder">
+                    Ad Space (300x250)
+                    <!-- Replace with your AdSense code -->
+                </div>
+            </div>
+            
+            <div class="language-selector-container">
+                <h3 class="language-selector-title"><i class="fas fa-globe-asia"></i> Select Language</h3>
+                <select id="language-selector">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi (हिन्दी)</option>
+                    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="gu">Gujarati (ગુજરાતી)</option>
+                    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                </select>
+            </div>
+            
+            <div class="ad-container">
+                <div class="ad-label">Sponsored Content</div>
+                <div class="ad-placeholder">
+                    Native Ad (300x600)
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>ManaBarath News Hub</h3>
+                <p style="color: #bdc1c6; font-size: 0.9rem; margin-bottom: 1rem;">
+                    Bringing you wisdom and news from across India in multiple languages.
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Advertise With Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#">National</a></li>
+                    <li><a href="#">International</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Technology</a></li>
+                    <li><a href="#">Entertainment</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">GDPR Compliance</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 ManaBarath News Hub. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced News Feed with multiple sources and error handling
+        const newsSources = {
+            en: "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+            hi: "https://www.bhaskar.com/rss-v1--category-news.xml",
+            kn: "https://vijaykarnataka.com/rss/articles/news.xml",
+            ta: "https://www.dinamalar.com/rss.asp",
+            te: "https://www.eenadu.net/rss/rssfeed.xml",
+            ml: "https://www.mathrubhumi.com/rss/news",
+            mr: "https://www.loksatta.com/index.php?option=com_rss&feed=RSS2.0&no_html=1",
+            bn: "https://www.anandabazar.com/rss/latest.xml",
+            gu: "https://www.gujaratsamachar.com/rss/latest-news",
+            pa: "https://www.punjabkesari.in/rss/latest-news"
+        };
+
+        // Source logos for display (placeholder icons)
+        const sourceLogos = {
+            "timesofindia.indiatimes.com": "newspaper",
+            "bhaskar.com": "newspaper",
+            "vijaykarnataka.com": "newspaper",
+            "dinamalar.com": "newspaper",
+            "eenadu.net": "newspaper",
+            "mathrubhumi.com": "newspaper",
+            "loksatta.com": "newspaper",
+            "anandabazar.com": "newspaper",
+            "gujaratsamachar.com": "newspaper",
+            "punjabkesari.in": "newspaper"
+        };
+
+        // Get domain from URL
+        function getDomain(url) {
+            try {
+                const domain = new URL(url).hostname.replace('www.', '');
+                return domain;
+            } catch {
+                return "unknown";
+            }
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Load news from RSS feed
+        async function loadNews(language = 'en') {
+            const newsContainer = document.getElementById('news-feed');
+            
+            // Show loading state
+            newsContainer.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading ${getLanguageName(language)} news...</p>
+                </div>
+            `;
+            
+            try {
+                const feedUrl = newsSources[language];
+                if (!feedUrl) {
+                    throw new Error("No feed available for this language");
+                }
+                
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.items || data.items.length === 0) {
+                    throw new Error("No news items found in the feed");
+                }
+                
+                // Render news cards
+                newsContainer.innerHTML = `
+                    <div class="news-grid">
+                        ${data.items.slice(0, 9).map(item => `
+                            <div class="news-card">
+                                <div class="news-image">
+                                    <img src="${item.enclosure?.link || 'https://via.placeholder.com/300x180?text=News+Image'}" alt="${item.title}">
+                                </div>
+                                <div class="news-content">
+                                    <h3 class="news-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h3>
+                                    <p class="news-desc">${item.description?.substring(0, 120) || 'No description available'}...</p>
+                                    <div class="news-meta">
+                                        <div class="news-source">
+                                            <i class="fas fa-${sourceLogos[getDomain(item.link)] || 'newspaper'}"></i>
+                                            <span>${getDomain(item.link)}</span>
+                                        </div>
+                                        <div class="news-date">${formatDate(item.pubDate)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsContainer.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h3 class="error-title">Failed to Load News</h3>
+                        <p class="error-message">We're having trouble fetching the latest updates. Please try again later.</p>
+                        <button class="retry-button" onclick="loadNews(document.getElementById('language-selector').value)">
+                            <i class="fas fa-sync-alt"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Enhanced Daily Vachana with multiple languages
+        const vachanaDatabase = {
+            en: [
+                { text: "Work is worship", author: "Traditional" },
+                { text: "Knowledge is power", author: "Francis Bacon" },
+                { text: "The only true wisdom is in knowing you know nothing", author: "Socrates" }
+            ],
+            hi: [
+                { text: "ज्ञान ही शक्ति है", author: "पारंपरिक" },
+                { text: "कर्म ही पूजा है", author: "स्वामी विवेकानंद" },
+                { text: "अहिंसा परमो धर्मः", author: "महात्मा गांधी" }
+            ],
+            kn: [
+                { text: "ಕಾಯವೇ ದೇವಾಲಯ, ಪ್ರಾಣವೇ ಲಿಂಗಪೂಜೆ", author: "ಬಸವಣ್ಣ" },
+                { text: "ಜ್ಞಾನವೇ ಶಕ್ತಿ", author: "ಪಾರಂಪರಿಕ" },
+                { text: "ಕರ್ಮವೇ ಪೂಜೆ", author: "ಪಾರಂಪರಿಕ" }
+            ],
+            ta: [
+                { text: "அறிவே சக்தி", author: "பாரம்பரிய" },
+                { text: "வேலைதான் வழிபாடு", author: "பாரம்பரிய" },
+                { text: "அன்பே சிவம்", author: "திருமூலர்" }
+            ],
+            te: [
+                { text: "జ్ఞానమే శక్తి", author: "సాంప్రదాయ" },
+                { text: "పనే పూజ", author: "సాంప్రదాయ" },
+                { text: "అహింస పరమో ధర్మః", author: "గాంధీ" }
+            ],
+            ml: [
+                { text: "ജ്ഞാനമാണ് ശക്തി", author: "പാരമ്പര്യ" },
+                { text: "ജോലിയാണ് ആരാധന", author: "പാരമ്പര്യ" },
+                { text: "അഹിംസ പരമോ ധർമ്മഃ", author: "ഗാന്ധി" }
+            ],
+            mr: [
+                { text: "ज्ञान ही शक्ती आहे", author: "पारंपारिक" },
+                { text: "कर्म ही पूजा आहे", author: "पारंपारिक" }
+            ],
+            bn: [
+                { text: "জ্ঞানই শক্তি", author: "প্রথাগত" },
+                { text: "কর্মই পূজা", author: "প্রথাগত" }
+            ],
+            gu: [
+                { text: "જ્ઞાન જ શક્તિ છે", author: "પરંપરાગત" },
+                { text: "કર્મ જ પૂજા છે", author: "પરંપરાગત" }
+            ],
+            pa: [
+                { text: "ਗਿਆਨ ਹੀ ਤਾਕਤ ਹੈ", author: "ਰਵਾਇਤੀ" },
+                { text: "ਕਰਮ ਹੀ ਪੂਜਾ ਹੈ", author: "ਰਵਾਇਤੀ" }
+            ]
+        };
+
+        // Get language name from code
+        function getLanguageName(code) {
+            const languages = {
+                en: 'English',
+                hi: 'Hindi',
+                kn: 'Kannada',
+                ta: 'Tamil',
+                te: 'Telugu',
+                ml: 'Malayalam',
+                mr: 'Marathi',
+                bn: 'Bengali',
+                gu: 'Gujarati',
+                pa: 'Punjabi'
+            };
+            return languages[code] || 'English';
+        }
+
+        // Show daily Vachana
+        function showDailyVachana(language = 'en') {
+            const vachanas = vachanaDatabase[language] || vachanaDatabase['en'];
+            const today = new Date().getDate();
+            const vachana = vachanas[today % vachanas.length];
+            
+            document.getElementById('vachana-text').textContent = vachana.text;
+            document.getElementById('vachana-author').textContent = `— ${vachana.author}`;
+            document.getElementById('vachana-language').innerHTML = `
+                <i class="fas fa-language"></i>
+                <span>Language: ${getLanguageName(language)}</span>
+            `;
+        }
+
+        // Language selector functionality
+        document.getElementById('language-selector').addEventListener('change', function() {
+            const selectedLanguage = this.value;
+            showDailyVachana(selectedLanguage);
+            loadNews(selectedLanguage);
+            
+            // Update active nav item
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector('nav a').classList.add('active');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+            showDailyVachana();
+            
+            // Set default language based on browser preference
+            const userLang = navigator.language.substring(0, 2);
+            if (newsSources[userLang]) {
+                document.getElementById('language-selector').value = userLang;
+                loadNews(userLang);
+                showDailyVachana(userLang);
+            }
+        });
+    </script>
+</body>
+</html>
